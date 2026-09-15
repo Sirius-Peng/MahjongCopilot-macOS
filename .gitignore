@@ -3,6 +3,7 @@ dist/
 build/
 .env
 .venv/
+.venv-*/
 venv/
 .vscode/
 .idea/
@@ -26,4 +27,5 @@ MahjongCopilot.spec
 /settings*.json
 libriichi3p/*.pyd
 libriichi3p/*.so
+libriichi/*.so
 chrome_ext/

@@ -1,6 +1,7 @@
 """ Settings file and options """
 
 import json
+import sys
 from typing import Callable
 from .log_helper import LOGGER
 from .lan_str import LanStr, LAN_OPTIONS
@@ -27,6 +28,8 @@ class Settings:
         self.mitm_port:int = self._get_value("mitm_port", 10999, self.valid_mitm_port)
         self.upstream_proxy:str = self._get_value("upstream_proxy","")  # mitm upstream proxy server e.g. http://ip:port
         self.enable_proxinject:bool = self._get_value("enable_proxinject", False, self.valid_bool)
+        if sys.platform != "win32":
+            self.enable_proxinject = False
         self.inject_process_name:str = self._get_value("inject_process_name", "jantama_mahjongsoul")
         self.language:str = self._get_value("language", list(LAN_OPTIONS.keys())[-1], self.valid_language)  # language code
         self.enable_overlay:bool = self._get_value("enable_overlay", True, self.valid_bool) # not shown
@@ -84,7 +87,7 @@ class Settings:
         # save all non-private variables (not starting with "_") into dict
         settings_to_save = {key: value for key, value in self.__dict__.items()
                             if not key.startswith('_') and not callable(value)}
-        with open(self._json_file, 'w', encoding='utf-8') as file:
+        with open(utils.sub_file(".", self._json_file), 'w', encoding='utf-8') as file:
             json.dump(settings_to_save, file, indent=4, separators=(', ', ': '))
     
     def _get_value(self, key:str, default_value:any, validator:Callable[[any],bool]=None) -> any:

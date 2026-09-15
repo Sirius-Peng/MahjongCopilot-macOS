@@ -83,7 +83,7 @@ class LiqiProto:
         self.msg_id = 1
         self.tot = 0
         self.res_type = dict()
-        jsonf = utils.sub_file('liqi_proto','liqi.json')
+        jsonf = utils.resource_file('liqi_proto','liqi.json')
         self.jsonProto = json.load(open(jsonf, 'r', encoding='utf-8'))
 
     def init(self):

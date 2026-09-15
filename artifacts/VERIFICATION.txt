@@ -1,0 +1,42 @@
+TARGET: MahjongCopilot macOS Apple Silicon port
+ORIGINAL_COMMIT: 31be3de972bbe4b1261360ff61b18f1bb84babbe
+CHANGED_BRANCH: macos
+CHANGED_FIELD: common.utils path routing (bundle resources vs. macOS Application Support), macOS login-keychain certificate handling, native 4P/3P engines, bundled Chromium, PyInstaller .app packaging, and GitHub Release workflow.
+
+FOUR_ARTIFACTS:
+MODIFIED_FILE=/Users/nh_y/Desktop/maj/MahjongCopilot-macOS/artifacts/MODIFIED_FILE
+DIFF_FILE=/Users/nh_y/Desktop/maj/MahjongCopilot-macOS/artifacts/DIFF_FILE
+VERIFICATION=/Users/nh_y/Desktop/maj/MahjongCopilot-macOS/artifacts/VERIFICATION.txt
+ROLLBACK=/Users/nh_y/Desktop/maj/MahjongCopilot-macOS/artifacts/ROLLBACK.sh
+
+BASELINE:
+COMMAND: python3.12 -m compileall -q .
+INPUT: pristine upstream main checkout at 31be3de972bbe4b1261360ff61b18f1bb84babbe
+LITERAL_OUTPUT:
+./updater.py:244: SyntaxWarning: invalid escape sequence '\*'
+  """
+EXIT_STATUS: 0
+RESULT: Original source compiled; it emitted the original updater escape warning and had no native macOS app artifact.
+
+MODIFIED:
+COMMAND: ./dist/MahjongCopilot.app/Contents/MacOS/MahjongCopilot --self-test
+INPUT: ad-hoc-signed Apple Silicon app bundle with packaged 4P/3P engines, Chromium, and resources
+LITERAL_OUTPUT:
+SELF_TEST_OK platform=darwin arch=arm64 engines=4p,3p chromium=present resources=present
+EXIT_STATUS: 0
+RESULT: The modified bundle loaded both engines and found executable Chromium and bundled resources.
+
+ROLLBACK:
+COMMAND: ./artifacts/ROLLBACK.sh /tmp/MahjongCopilot-rollback.4fic8z
+INPUT: another pristine upstream checkout after applying artifacts/DIFF_FILE
+LITERAL_OUTPUT:
+ROLLBACK_OK target=/tmp/MahjongCopilot-rollback.4fic8z restored=upstream/main
+EXIT_STATUS: 0
+RESTORED_BEHAVIOR_STATUS: git diff --exit-code HEAD -- . returned literal output <empty> and exit status 0; the copy was restored to upstream commit 31be3de972bbe4b1261360ff61b18f1bb84babbe. The working tree /Users/nh_y/Desktop/maj/MahjongCopilot-macOS remains changed.
+
+PACKAGE:
+PATH: /Users/nh_y/Desktop/maj/MahjongCopilot-macOS/dist/MahjongCopilot-macOS-arm64.zip
+SHA256: bcf64a78ad0f5374b5083029e24d7b02334159aaf868cb5745cf52a4e67eea02
+CODESIGN_COMMAND: codesign --verify --deep --strict dist/MahjongCopilot.app
+CODESIGN_LITERAL_OUTPUT: <empty>
+CODESIGN_EXIT_STATUS: 0

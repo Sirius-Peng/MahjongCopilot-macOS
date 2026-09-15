@@ -5,12 +5,14 @@ GUI functions: controlling browser settings, displaying AI guidance info, game s
 """
 
 import os
+import subprocess
+import sys
 import tkinter as tk
 from tkinter import ttk, messagebox
 
 from bot_manager import BotManager, mjai_reaction_2_guide
 from common.utils import Folder, GameMode, GAME_MODES, GameClientType
-from common.utils import UiState, sub_file, error_to_str
+from common.utils import UiState, resource_file, error_to_str
 from common.log_helper import LOGGER, LogHelper
 from common.settings import Settings
 from common.mj_helper import GameInfo, MJAI_TILE_2_UNICODE
@@ -31,7 +33,7 @@ class MainGUI(tk.Tk):
         self.after_idle(self.updater.load_help)
         self.after_idle(self.updater.check_update)        # check update when idle
         
-        icon = tk.PhotoImage(file=sub_file(Folder.RES,'icon.png'))
+        icon = tk.PhotoImage(file=resource_file(Folder.RES,'icon.png'))
         self.iconphoto(True, icon)
         self.protocol("WM_DELETE_WINDOW", self._on_exit)        # confirmation before close window  
         size = (620,540)      
@@ -43,11 +45,11 @@ class MainGUI(tk.Tk):
         style = ttk.Style(self)
         GUI_STYLE.set_style_normal(style)
         # icon resources:
-        self.icon_green = sub_file(Folder.RES,'green.png')
-        self.icon_red = sub_file(Folder.RES,'red.png')
-        self.icon_yellow = sub_file(Folder.RES,'yellow.png')
-        self.icon_gray =sub_file(Folder.RES,'gray.png')
-        self.icon_ready = sub_file(Folder.RES,'ready.png')
+        self.icon_green = resource_file(Folder.RES,'green.png')
+        self.icon_red = resource_file(Folder.RES,'red.png')
+        self.icon_yellow = resource_file(Folder.RES,'yellow.png')
+        self.icon_gray = resource_file(Folder.RES,'gray.png')
+        self.icon_ready = resource_file(Folder.RES,'ready.png')
 
         # create window widgets
         self._create_widgets()
@@ -222,7 +224,12 @@ class MainGUI(tk.Tk):
 
     def _on_btn_log_clicked(self):
         # LOGGER.debug('Open log')
-        os.startfile(LogHelper.log_file_name)
+        if sys.platform == 'darwin':
+            subprocess.Popen(['open', LogHelper.log_file_name])
+        elif sys.platform == 'win32':
+            os.startfile(LogHelper.log_file_name)
+        else:
+            subprocess.Popen(['xdg-open', LogHelper.log_file_name])
         
 
     def _on_btn_settings_clicked(self):

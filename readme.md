@@ -50,6 +50,33 @@ Features:
 5. Main entry: main.py
 
 ### 示例脚本 Sample script：
+
+#### macOS 应用 / macOS app (Apple Silicon)
+
+此分支提供原生 `.app` 打包、独立的 macOS 数据目录以及 GitHub Actions 发布流程。
+发布页下载 `MahjongCopilot-macOS-arm64.zip`，解压后把 `MahjongCopilot.app` 移入“应用程序”。
+首次启动请按住 Control 点击应用并选择“打开”。mitmproxy 根证书会安装到当前用户的登录钥匙串；
+配置、模型、日志和浏览器资料保存在 `~/Library/Application Support/MahjongCopilot/`。
+
+This branch provides a native `.app` bundle for Apple Silicon, a macOS-safe writable data
+directory, and a GitHub Actions release workflow. Download `MahjongCopilot-macOS-arm64.zip`,
+unzip it, and move `MahjongCopilot.app` to Applications. Control-click and choose **Open** on
+first launch. The mitmproxy root certificate is added to the current user's login keychain.
+Settings, models, logs, and browser data live in
+`~/Library/Application Support/MahjongCopilot/`.
+
+To build locally (macOS arm64 and Python 3.12):
+
+```sh
+./scripts/build_macos.sh
+```
+
+The script downloads checksum-pinned native 3-player and 4-player `libriichi` libraries,
+installs Chromium, runs the macOS unit tests, builds and ad-hoc signs the application, and
+creates `dist/MahjongCopilot-macOS-arm64.zip` plus its SHA-256 file.
+
+#### Windows
+
 ```batch
 git clone https://github.com/latorc/MahjongCopilot.git
 cd MahjongCopilot

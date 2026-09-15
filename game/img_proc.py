@@ -75,8 +75,8 @@ class GameVisual:
             (ImgTemp.MAIN_MENU, 'mainmenu.png', 'mainmenu_mask.png')
         ]
         for loc, img_file, mask_file in files:
-            img_file = utils.sub_file(Folder.RES, img_file)
-            mask_file = utils.sub_file(Folder.RES, mask_file)
+            img_file = utils.resource_file(Folder.RES, img_file)
+            mask_file = utils.resource_file(Folder.RES, mask_file)
             img_mainmenu = Image.open(img_file).convert('RGB')
             mask_mainmenu = Image.open(mask_file).convert('L')
             self.temp_dict[loc] = (img_mainmenu, mask_mainmenu)

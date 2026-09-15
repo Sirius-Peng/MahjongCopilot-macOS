@@ -1,0 +1,10 @@
+mitmproxy==10.2.4
+playwright==1.42.0
+torch==2.2.1
+requests
+numpy<2
+pillow
+cryptography
+tkhtmlview
+pyinstaller>=6.10,<7
+aliyun-log-python-sdk

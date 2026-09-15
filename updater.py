@@ -6,6 +6,7 @@ import os
 import re
 import shutil
 import zipfile
+import webbrowser
 from enum import Enum,auto
 import requests
 
@@ -16,6 +17,7 @@ from common.log_helper import LOGGER
 VERSION_FILE = "version"
 UPDATE_FILE = "MahjongCopilot.zip"
 HELP_PATH = r"/help"
+MACOS_RELEASES_URL = "https://github.com/Sirius-Peng/MahjongCopilot-macOS/releases/latest"
 
 """ how to release update:
 - Use Pyinstaller to pack to executables.
@@ -45,7 +47,7 @@ class Updater:
         # read version number from file "version"
         try:
             self.local_version = None
-            with open(utils.sub_file(".", VERSION_FILE), 'r', encoding='utf-8') as f:
+            with open(utils.resource_file(".", VERSION_FILE), 'r', encoding='utf-8') as f:
                 self.local_version = str(f.read()).strip()
         except:#pylint:disable=bare-except
             LOGGER.error("Cannot read version file!")
@@ -189,11 +191,13 @@ class Updater:
                         
     def prepare_update(self):
         """ Prepare update in thread: download and unzip file"""
-        if sys.platform == "win32":     # check system support
-            pass
-        else:
+        if sys.platform == "darwin":
+            webbrowser.open(MACOS_RELEASES_URL)
+            self.update_status = UpdateStatus.NO_UPDATE
+            return
+        if sys.platform != "win32":
             self.update_status = UpdateStatus.ERROR
-            self.update_exception = RuntimeError("Update only supports Windows for now.")
+            self.update_exception = RuntimeError("Update supports Windows and macOS builds.")
             return
         
         def update_task():

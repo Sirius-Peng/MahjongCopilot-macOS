@@ -7,6 +7,7 @@ The BotManager class is run in a separate thread, and provide interface methods 
 import time
 import queue
 import threading
+import sys
 
 from game.browser import GameBrowser
 from game.game_state import GameState
@@ -236,7 +237,7 @@ class BotManager:
     def _create_mitm_and_proxinject(self):
         # create mitm and proxinject threads
         # enable proxyinject requires socks5, which disables upstream proxy
-        if self.st.enable_proxinject:
+        if self.st.enable_proxinject and sys.platform == "win32":
             mode = mitm.SOCKS5
             LOGGER.debug("Enabling proxyinject requires socks5, and it disables upstream proxy")
         else:
@@ -247,7 +248,7 @@ class BotManager:
         if not res:
             self.main_thread_exception = utils.MitmCertNotInstalled(self.mitm_server.cert_file)
         
-        if self.st.enable_proxinject:
+        if self.st.enable_proxinject and sys.platform == "win32":
             self.proxy_injector.start(self.st.inject_process_name, "127.0.0.1", self.st.mitm_port)
         
 

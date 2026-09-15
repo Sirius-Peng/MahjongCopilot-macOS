@@ -1,5 +1,6 @@
 """ GUI Settings Window """
 import tkinter as tk
+import sys
 from tkinter import ttk, messagebox
 
 from common.utils import Folder
@@ -110,6 +111,8 @@ class SettingsWindow(tk.Toplevel):
         check_proxy_inject = ttk.Checkbutton(
             main_frame, variable=self.proxy_inject_var, text=self.st.lan().CLIENT_INJECT_PROXY, width=std_wid*2)
         check_proxy_inject.grid(row=cur_row, column=2, columnspan=2, **args_entry)  
+        if sys.platform != "win32":
+            check_proxy_inject.configure(state=tk.DISABLED)
 
         # sep
         cur_row += 1
