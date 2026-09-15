@@ -1,6 +1,6 @@
 TARGET: MahjongCopilot macOS Apple Silicon port
 ORIGINAL_COMMIT: 31be3de972bbe4b1261360ff61b18f1bb84babbe
-CHANGED_BRANCH: macos
+CHANGED_BRANCH: macos (published to origin/main)
 CHANGED_FIELD: common.utils path routing (bundle resources vs. macOS Application Support), macOS login-keychain certificate handling, native 4P/3P engines, bundled Chromium, PyInstaller .app packaging, and GitHub Release workflow.
 
 FOUR_ARTIFACTS:
@@ -40,3 +40,9 @@ SHA256: bcf64a78ad0f5374b5083029e24d7b02334159aaf868cb5745cf52a4e67eea02
 CODESIGN_COMMAND: codesign --verify --deep --strict dist/MahjongCopilot.app
 CODESIGN_LITERAL_OUTPUT: <empty>
 CODESIGN_EXIT_STATUS: 0
+
+PUBLISHED:
+REPOSITORY: https://github.com/Sirius-Peng/MahjongCopilot-macOS
+RELEASE: https://github.com/Sirius-Peng/MahjongCopilot-macOS/releases/tag/v0.6.0-macos.1
+SOURCE_COMMIT: 40981b61f2864d9cc59c8cc241a07dcb330ce5e8
+RELEASE_ASSET_STATE: uploaded, size=298902099, digest=sha256:bcf64a78ad0f5374b5083029e24d7b02334159aaf868cb5745cf52a4e67eea02

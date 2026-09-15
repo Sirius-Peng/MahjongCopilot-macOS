@@ -33,7 +33,9 @@ index 0000000..9a3770f
 +        if: startsWith(github.ref, 'refs/tags/')
 +        env:
 +          GH_TOKEN: ${{ github.token }}
-+        run: gh release create "${GITHUB_REF_NAME}" --generate-notes dist/MahjongCopilot-macOS-arm64.zip dist/MahjongCopilot-macOS-arm64.zip.sha256
++        run: |
++          gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1 || gh release create "${GITHUB_REF_NAME}" --generate-notes
++          gh release upload "${GITHUB_REF_NAME}" --clobber dist/MahjongCopilot-macOS-arm64.zip dist/MahjongCopilot-macOS-arm64.zip.sha256
 diff --git a/.gitignore b/.gitignore
 index 155680a..30a5393 100644
 --- a/.gitignore
